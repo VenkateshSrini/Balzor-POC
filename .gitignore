@@ -9,3 +9,4 @@
 /BlazorCRUD/Server/obj
 /BlazorCRUD/Shared/bin/Debug/netstandard2.1
 /BlazorCRUD/Shared/obj
+*.user
