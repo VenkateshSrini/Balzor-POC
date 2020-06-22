@@ -1,0 +1,60 @@
+﻿@page "/addrecipe"
+@using BlazorCRUD.Shared.Model
+@inject HttpClient httpClient
+
+
+<h3>AddRecipe</h3>
+<Container>
+    <Row>
+        <Form >
+            <Row>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Name</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Margin="Margin.Is4.OnX" Placeholder="Some text value..." @bind-Text="@receipe.ReceipeName" />
+                    </FieldBody>
+                </Field>
+            </Row>
+            <Row>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2" >Ingredients</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10" >
+                        <TextEdit Margin="Margin.Is4.OnX" Placeholder="Some text value..." @bind-Text="@receipe.Ingredients" />
+                    </FieldBody>
+                </Field>
+            </Row>
+          <Row>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Description</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Margin="Margin.Is4.OnX" Placeholder="Some text value..." @bind-Text="@receipe.Description" />
+                    </FieldBody>
+                </Field>
+            </Row>
+            <Row>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Notes</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Margin="Margin.Is4.OnX" Placeholder="Some text value..." @bind-Text="@receipe.Notes" />
+                    </FieldBody>
+                </Field>
+            </Row>
+            <Row>
+                <Field Horizontal="true" JustifyContent="JustifyContent.End">
+                    <FieldLabel ColumnSize="ColumnSize.Is2"></FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <Button Color="Color.Primary" Clicked="@Submit">Submit</Button>
+                    </FieldBody>
+                </Field>
+            </Row>
+        </Form>
+    </Row>
+</Container>
+    @code {
+        Receipe receipe = new Receipe();
+        public async Task Submit()
+        {
+            await httpClient.PostAsJsonAsync<Receipe>("/api/Receipe/AddReceipe", receipe);
+        }
+
+    }
