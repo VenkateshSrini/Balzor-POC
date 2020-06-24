@@ -54,7 +54,7 @@
         Receipe receipe = new Receipe();
         public async Task Submit()
         {
-            await httpClient.PostAsJsonAsync<Receipe>("/api/Receipe/AddReceipe", receipe);
+           var response =  await httpClient.PostAsJsonAsync<Receipe>("http://localHost:5000/api/Receipe", receipe);
         }
 
     }
