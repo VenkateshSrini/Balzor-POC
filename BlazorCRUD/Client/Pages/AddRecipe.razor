@@ -1,12 +1,12 @@
 ﻿@page "/addrecipe"
 @using BlazorCRUD.Shared.Model
 @inject HttpClient httpClient
-
+@inject NavigationManager UriHelper
 
 <h3>AddRecipe</h3>
 <Container>
     <Row>
-        <Form >
+        <Form>
             <Row>
                 <Field Horizontal="true">
                     <FieldLabel ColumnSize="ColumnSize.Is2">Name</FieldLabel>
@@ -17,13 +17,13 @@
             </Row>
             <Row>
                 <Field Horizontal="true">
-                    <FieldLabel ColumnSize="ColumnSize.Is2" >Ingredients</FieldLabel>
-                    <FieldBody ColumnSize="ColumnSize.Is10" >
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Ingredients</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
                         <TextEdit Margin="Margin.Is4.OnX" Placeholder="Some text value..." @bind-Text="@receipe.Ingredients" />
                     </FieldBody>
                 </Field>
             </Row>
-          <Row>
+            <Row>
                 <Field Horizontal="true">
                     <FieldLabel ColumnSize="ColumnSize.Is2">Description</FieldLabel>
                     <FieldBody ColumnSize="ColumnSize.Is10">
@@ -50,11 +50,12 @@
         </Form>
     </Row>
 </Container>
-    @code {
-        Receipe receipe = new Receipe();
-        public async Task Submit()
-        {
-           var response =  await httpClient.PostAsJsonAsync<Receipe>("http://localHost:5000/api/Receipe", receipe);
-        }
-
+@code {
+    Receipe receipe = new Receipe();
+    public async Task Submit()
+    {
+        var baseUri = UriHelper.BaseUri.ToString();
+        var response = await httpClient.PostAsJsonAsync<Receipe>($"{baseUri}api/Receipe", receipe);
     }
+
+}
