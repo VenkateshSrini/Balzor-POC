@@ -18,15 +18,19 @@ namespace BlazorCRUD.Server.Controllers
         {
             this.receipeServices = receipeServices;
         }
-        public async Task<ActionResult<List<Receipe>>> GetAllReceipes()
+        [Route("GetAllReceipes")]
+        [HttpGet]
+        public async Task<List<Receipe>> GetAllReceipes()
         {
             var results = await receipeServices.GetAllReceipes();
-            return Ok(results);
+            return results;
         }
-        public async Task<ActionResult<List<Receipe>>> GetAReceipes(string Id)
+        [Route("GetAReceipes")]
+        [HttpGet]
+        public async Task<Receipe> GetAReceipes(string Id)
         {
             var results = await receipeServices.GetReceipeById(Id);
-            return Ok(results);
+            return results;
         }
         [HttpPost]
         public async Task<ActionResult<Receipe>>AddReceipe([FromBody]Receipe receipe)

@@ -1,6 +1,64 @@
-﻿@page "/fecthrecipe"
-<h3>FecthRecipe</h3>
+﻿@page "/fetchrecipe"
+@using BlazorCRUD.Shared.Model
+@using System.Text.Json;
+@inject HttpClient httpClient
+@inject NavigationManager UriHelper
 
+@if (recipes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<Table >
+    <TableHeader>
+        <TableHeader>
+            <TableRow>
+                <TableHeaderCell>Receipe ID</TableHeaderCell>
+                <TableHeaderCell>Name</TableHeaderCell>
+                <TableHeaderCell>Ingredients</TableHeaderCell>
+                <TableHeaderCell>Description</TableHeaderCell>
+                <TableHeaderCell>Notes</TableHeaderCell>
+            </TableRow>
+        </TableHeader>
+    </TableHeader>
+    <TableBody>
+        @foreach (var receipe in recipes)
+        {
+            <TableRow>
+                <TableRowCell>@receipe.ReceipeID</TableRowCell>
+                <TableRowCell>@receipe.ReceipeName</TableRowCell>
+                <TableRowCell>@receipe.Ingredients</TableRowCell>
+                <TableRowCell>@receipe.Description</TableRowCell>
+                <TableRowCell>@receipe.Notes</TableRowCell>
+            </TableRow>
+        }
+    </TableBody>
+
+</Table>
+}
 @code {
+
+    List<Receipe> recipes { get; set; }
+    public void AddNewReceipe(Receipe receipe)
+    {
+        if (recipes == null)
+            recipes = new List<Receipe>();
+        else
+            recipes.Add(receipe);
+        StateHasChanged();
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        var baseUri = UriHelper.BaseUri.ToString();
+        var response = await httpClient.GetAsync($"{baseUri}api/Receipe/GetAllReceipes");
+        if (response.IsSuccessStatusCode)
+        {
+            recipes = await response.Content.ReadFromJsonAsync<List<Receipe>>();
+        }
+
+
+    }
 
 }

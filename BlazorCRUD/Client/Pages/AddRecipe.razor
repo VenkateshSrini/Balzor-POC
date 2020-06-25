@@ -49,13 +49,28 @@
             </Row>
         </Form>
     </Row>
+    <Row>
+        <Label>@submitStatus</Label>
+    </Row>
+    <Row>
+        <FecthRecipe @ref="fetchReceipe"/>
+    </Row>
 </Container>
 @code {
     Receipe receipe = new Receipe();
+    FecthRecipe fetchReceipe;
+    string submitStatus=string.Empty;
     public async Task Submit()
     {
         var baseUri = UriHelper.BaseUri.ToString();
         var response = await httpClient.PostAsJsonAsync<Receipe>($"{baseUri}api/Receipe", receipe);
+        if (response.IsSuccessStatusCode)
+        {
+            submitStatus = "Receipe added successfully";
+            fetchReceipe.AddNewReceipe(receipe);
+        }
+        else
+            submitStatus = response.ReasonPhrase;
     }
 
 }
