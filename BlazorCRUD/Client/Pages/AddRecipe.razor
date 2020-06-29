@@ -67,7 +67,8 @@
         if (response.IsSuccessStatusCode)
         {
             submitStatus = "Receipe added successfully";
-            fetchReceipe.AddNewReceipe(receipe);
+            var newReceipe = await response.Content.ReadFromJsonAsync<Receipe>();
+            fetchReceipe.AddNewReceipe(newReceipe);
         }
         else
             submitStatus = response.ReasonPhrase;
