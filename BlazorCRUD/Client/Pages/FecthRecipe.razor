@@ -53,6 +53,12 @@ else
         StateHasChanged();
 
     }
+    public void ModifyReceipeInGrid(Receipe receipe)
+    {
+        var selectedReceipe = recipes.Find(rec => rec.ReceipeID.CompareTo(receipe.ReceipeID) == 0);
+        selectedReceipe = receipe;
+        StateHasChanged();
+    }
     protected override async Task OnInitializedAsync()
     {
         var baseUri = UriHelper.BaseUri.ToString();

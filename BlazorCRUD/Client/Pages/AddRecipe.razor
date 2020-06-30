@@ -69,15 +69,34 @@
     public async Task Submit()
     {
         var baseUri = UriHelper.BaseUri.ToString();
-        var response = await httpClient.PostAsJsonAsync<Receipe>($"{baseUri}api/Receipe", receipe);
-        if (response.IsSuccessStatusCode)
+        if (opType == "add")
         {
-            submitStatus = "Receipe added successfully";
-            var newReceipe = await response.Content.ReadFromJsonAsync<Receipe>();
-            fetchReceipe.AddNewReceipe(newReceipe);
+            var response = await httpClient.PostAsJsonAsync<Receipe>($"{baseUri}api/Receipe", receipe);
+            if (response.IsSuccessStatusCode)
+            {
+                submitStatus = "Receipe added successfully";
+                var newReceipe = await response.Content.ReadFromJsonAsync<Receipe>();
+                fetchReceipe.AddNewReceipe(newReceipe);
+            }
+            else
+                submitStatus = response.ReasonPhrase;
         }
-        else
-            submitStatus = response.ReasonPhrase;
+        else if (opType=="mod")
+        {
+            var response = await httpClient.PutAsJsonAsync<Receipe>($"{baseUri}api/Receipe", receipe);
+            if (response.IsSuccessStatusCode)
+            {
+                submitStatus = "Receipe Modified successfully";
+                fetchReceipe.ModifyReceipeInGrid(receipe);
+                opType="add";
+                receipe = new Receipe();
+
+            }
+            else
+                submitStatus = response.ReasonPhrase;
+            
+            StateHasChanged();
+        }
     }
     private void OnModify(Receipe modReceipe)
     {
