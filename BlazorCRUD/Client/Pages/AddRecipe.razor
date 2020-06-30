@@ -53,13 +53,19 @@
         <Label>@submitStatus</Label>
     </Row>
     <Row>
-        <FecthRecipe @ref="fetchReceipe"/>
+        <FecthRecipe @ref="fetchReceipe" />
     </Row>
 </Container>
 @code {
+
     Receipe receipe = new Receipe();
     FecthRecipe fetchReceipe;
     string submitStatus=string.Empty;
+    string opType = "add";
+    protected override void OnAfterRender(bool firstRender)
+    {
+        fetchReceipe.OnReceipeModify = OnModify;
+    }
     public async Task Submit()
     {
         var baseUri = UriHelper.BaseUri.ToString();
@@ -72,6 +78,13 @@
         }
         else
             submitStatus = response.ReasonPhrase;
+    }
+    private void OnModify(Receipe modReceipe)
+    {
+        receipe = modReceipe;
+        opType = "mod";
+        StateHasChanged();
+
     }
 
 }
